@@ -1,0 +1,61 @@
+﻿// KM PTYltd - Basic Online Store (React + Tailwind)
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+const sampleProducts = [
+  { id: 1, name: "Nike Air Force 1", price: 1800, image: "https://via.placeholder.com/150?text=Nike+AF1" },
+  { id: 2, name: "Nike T-shirt", price: 600, image: "https://via.placeholder.com/150?text=Nike+T-shirt" },
+  { id: 3, name: "Cap", price: 400, image: "https://via.placeholder.com/150?text=Cap" },
+  { id: 4, name: "Sneakers", price: 900, image: "https://via.placeholder.com/150?text=Sneakers" },
+];
+
+export default function StoreApp() {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  const checkout = () => {
+    alert("Checkout complete! Total: R" + cart.reduce((sum, item) => sum + item.price, 0));
+    setCart([]);
+  };
+
+  return (
+    <div className="p-4 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center">KM PTYltd Store</h1>
+      <p className="text-center text-gray-600 mb-8">Selling Nike Air Force 1s and Nike T-shirts</p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {sampleProducts.map((product) => (
+          <Card key={product.id} className="flex flex-col items-center text-center">
+            <img src={product.image} alt={product.name} className="w-full h-40 object-cover" />
+            <CardContent>
+              <h2 className="text-xl font-semibold">{product.name}</h2>
+              <p className="text-gray-600">R{product.price}</p>
+              <Button className="mt-2" onClick={() => addToCart(product)}>Add to Cart</Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold">Cart</h2>
+        {cart.length === 0 ? (
+          <p className="text-gray-500">Your cart is empty.</p>
+        ) : (
+          <div>
+            <ul className="list-disc ml-5">
+              {cart.map((item, index) => (
+                <li key={index}>{item.name} - R{item.price}</li>
+              ))}
+            </ul>
+            <p className="mt-2 font-semibold">Total: R{cart.reduce((sum, item) => sum + item.price, 0)}</p>
+            <Button className="mt-2" onClick={checkout}>Checkout</Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
